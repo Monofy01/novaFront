@@ -9,15 +9,32 @@ body{margin-top:20px;
   background: #1A233A;
 }
 
+i {
+  color: white;
+}
+
 a {
+  color: white;
   cursor: pointer;
 }
+
+tr {
+  text-align: center;
+}
+
+button {
+  margin-inline: 4px;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
 
 .nav-specific {
   color: #bcd0f7;
   background: #1E3A55;
 }
-
 
 .container {
   margin-top: 30px;
@@ -26,3 +43,36 @@ a {
 .table-dark {
   background: #1E3A55;
 }
+
+.logged-in {
+  color: green;
+}
+
+.logged-out {
+  color: red;
+}
+
+.img-thumbnail {
+  width: 45px;
+  height: 45px;
+  border: none;
+}
+
+.user {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+
+
+
+
+
+
+
