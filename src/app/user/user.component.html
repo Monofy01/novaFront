@@ -15,7 +15,6 @@
       </thead>
       <tbody>
       <tr *ngFor="let user of users">
-        <th scope="row"></th>
         <td class="td-item"><img src="{{user.img}}" class="user" alt="user pic"/></td>
         <td class="td-item">{{user.id}}</td>
         <td class="td-item">{{user.name}}</td>
@@ -24,8 +23,8 @@
         <td class="td-item"><div *ngIf="user.status; else loggedOut"><span class="logged-in">●</span></div><ng-template #loggedOut><span class="logged-out">●</span></ng-template></td>
         <td>
           <div class="float-center btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-outline-danger "><i class="fa fa-close"></i></button>
+            <button type="button" (click)="onOpenModalUser(user, 'edit')" name="submit" class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>
+            <button type="button" name="submit" class="btn btn-outline-danger "><i class="fa fa-close"></i></button>
           </div>
         </td>
       </tr>
@@ -78,6 +77,58 @@
             <button type="submit" class="btn btn-primary" >Send</button>
           </div>
 
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateUserModalLabel">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editUserForm="ngForm">
+          <div class="form-group">
+            <input type="hidden" ngModel="{{editUser?.id}}" name="id" class="form-control" id="id" placeholder="-">
+          </div>
+          <div class="form-group">
+            <img src="{{editUser?.img}}" class="img-responsive user-edit" alt="user pic"/>
+          </div>
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" ngModel="{{editUser?.name}}" name="name" id="user_name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender:</label>
+            <input type="text" ngModel="{{editUser?.gender}}" name="gender" id="user_gender" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" ngModel="{{editUser?.email}}" name="email" id="user_email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="status">Status:</label>
+            <select ngModel name="status" id="user_status" class="form-control" aria-label="Default select example">
+              <option [ngValue]="true" [selected]="editUser?.status == true">Active</option>
+              <option [ngValue]="false" [selected]="editUser?.status == false">Inactive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="img">File:</label>
+            <input type="file" ngModel (change)="onFileLoad($event)" name="img" id="user_img" class="form-control" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button (click)="onUpdateUser(editUserForm.value, editUser.img)" data-dismiss="modal" class="btn btn-primary" >Send</button>
+          </div>
         </form>
       </div>
     </div>

@@ -18,6 +18,10 @@ export class AppComponent {
     if (mode === 'add') {
       button.setAttribute('data-target', '#addUserModal');
     }
+    // if (mode === 'edit') {
+    //   // this.editProveedor = proveedor
+    //   button.setAttribute('data-target', '#updateProveedorModal');
+    // }
     container!.appendChild(button);
     button.click();
   }
