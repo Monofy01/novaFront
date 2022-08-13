@@ -93,6 +93,7 @@ export class UserComponent implements OnInit {
   }
 
     public onOpenModalUser(user: User, mode: string) {
+
       const container = document.getElementById('user-container');
 
       const button = document.createElement('button');
@@ -101,9 +102,26 @@ export class UserComponent implements OnInit {
       button.setAttribute('data-toggle', 'modal');
       this.editUser = user;
       if (mode === 'edit') {
+        this.editUser = user
         button.setAttribute('data-target', '#updateUserModal');
+      }
+      if (mode === 'delete') {
+        console.log('test')
+        this.deleteUser = user;
+        button.setAttribute('data-target', '#deleteUserModal');
       }
       container!.appendChild(button);
       button.click();
+  }
+
+  public onDeleteUser(userId: number): void {
+    this.userService.deleteUser(userId).subscribe(
+      (response: void) => {
+        console.log('response');
+        this.getAllUsers();
+      }, (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
   }
 }
