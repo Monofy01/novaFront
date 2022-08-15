@@ -7,6 +7,11 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { UserService } from './user_service/user.service';
 
+
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +20,9 @@ import { UserService } from './user_service/user.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatPaginatorModule,
+    NoopAnimationsModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

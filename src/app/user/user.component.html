@@ -14,7 +14,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of pageSlice">
         <td class="td-item"><img src="{{user.img}}" class="user" alt="user pic"/></td>
         <td class="td-item">{{user.id}}</td>
         <td class="td-item">{{user.name}}</td>
@@ -24,8 +24,14 @@
         <td>
           <div class="float-center btn-group btn-group-sm">
             <button type="button" (click)="onOpenModalUser(user, 'edit')" name="submit" class="btn btn-outline-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" name="submit" class="btn btn-outline-danger "><i class="fa fa-close"></i></button>
+            <button type="button" (click)="onOpenModalUser(user, 'delete')" name="submit" class="btn btn-outline-danger "><i class="fa fa-close"></i></button>
           </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">
+          <mat-paginator [length]="this.users?.length" [pageSize]="10" aria-label="Select page" (page)="onPageChange($event)">
+          </mat-paginator>
         </td>
       </tr>
       </tbody>
@@ -55,7 +61,16 @@
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" ngModel name="email" id="email" class="form-control" required>
+            <input #email type="email" ngModel name="email" id="email" class="form-control" required>
+            <button type="button" (click)="onAddEmail(email.value)" name="addEmail" class="btn btn-outline-danger"><i class="fa fa-plus"></i></button>
+          </div>
+          <div *ngIf="listEmails.length > 0">
+            <span >List of emails</span>
+            <div [(ngModel)]="listEmails">
+              <div *ngFor="let email of listEmails">
+                <span>{{email}}</span>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="status">Status:</label>
@@ -82,7 +97,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Edit Modal -->
 <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
@@ -116,10 +130,11 @@
           </div>
           <div class="form-group">
             <label for="status">Status:</label>
-            <select ngModel name="status" id="user_status" class="form-control" aria-label="Default select example">
-              <option [ngValue]="true" [selected]="editUser?.status == true">Active</option>
-              <option [ngValue]="false" [selected]="editUser?.status == false">Inactive</option>
+
+            <select [(ngModel)]="selectedData" name="status" id="user_status" class="form-control" aria-label="Default select example">
+              <option *ngFor="let status of statusList" [ngValue]="status" >{{status}}</option>
             </select>
+
           </div>
           <div class="form-group">
             <label for="img">File:</label>
@@ -130,6 +145,27 @@
             <button (click)="onUpdateUser(editUserForm.value, editUser.img)" data-dismiss="modal" class="btn btn-primary" >Send</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the user?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button (click)="onDeleteUser(deleteUser.id)" class="btn btn-danger" data-dismiss="modal">Si</button>
+        </div>
       </div>
     </div>
   </div>

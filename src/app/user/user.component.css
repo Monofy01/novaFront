@@ -1,0 +1,22 @@
+::ng-deep .mat-paginator-page-size-select {
+  width: 30px!important;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: transparent;
+}
+
+::ng-deep .mat-select-value {
+  color: white;
+  /*font-size: 15px;*/
+}
+::ng-deep .mat-select-arrow {
+  color: white;
+}
+::ng-deep .mat-option-text {
+  text-align: right;
+}
+
+::ng-deep .mat-paginator-container {
+  background: #1A233A;
+  color: #bcd0f7;
+}
