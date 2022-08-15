@@ -23,7 +23,8 @@ export class UserComponent implements OnInit {
   public statusList: string[] = ['Active', 'Inactive']
   public selectedData = 'Inactive'
 
-  public listEmails: string[] = [];
+  public listEditEmails: string[] = [];
+  public listAddEmails: string[] = [];
 
 
   constructor(private userService: UserService, public _sanitizer: DomSanitizer) {
@@ -48,26 +49,58 @@ export class UserComponent implements OnInit {
   public onAddUser(addForm: NgForm): void {
     document.getElementById('add-user-form')!.click();
     addForm.value.img = this.imgData;
-    // console.log(addForm.value)
+    // check if input value exist or not
+    this.listAddEmails.indexOf(addForm.value.emails) === -1 ? this.listAddEmails.push(addForm.value.emails) : console.log("");
+    addForm.value.emails = this.listAddEmails;
 
     this.userService.addUser(addForm.value).subscribe(
       (response: User) => {
         this.getAllUsers();
         addForm.reset();
+        this.listAddEmails = [];
       }, (error: HttpErrorResponse) => {
         alert(error.message);
         addForm.reset();
       }
     )
+
   }
 
-  public onAddEmail(email: string) {
-    this.listEmails.push(email);
+  public onInputEmail(email: string, mode: string) {
+    if (mode == 'add')
+      this.listAddEmails.push(email);
+    if (mode == 'edit') {
+      this.listEditEmails.push(email)
+    }
+
+  }
+
+  public onEditEmails(emails: string[]) {
+    this.listEditEmails = emails.map((x) => x);
+  }
+
+  public onEmailDelete(email: string, mode: string) {
+    if (mode == 'edit') {
+    const index =  this.listEditEmails.indexOf(email);
+    if (index > -1) { // only splice array when item is found
+      this.listEditEmails.splice(index, 1); // 2nd parameter means remove one item only
+    }
+    } else if (mode == 'add') {
+      const index =  this.listAddEmails.indexOf(email);
+      if (index > -1) { // only splice array when item is found
+        this.listAddEmails.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    }
   }
 
   public onUpdateUser(user: User, source: any): void {
+
     console.log(user)
-    console.log(source)
+    console.log(this.listEditEmails)
+
+    let userInputEmail= <string><unknown>user.emails
+    this.listEditEmails.indexOf(userInputEmail) === -1 ? this.listEditEmails.push(userInputEmail) : console.log("");
+    user.emails = this.listEditEmails;
 
     user.status = <unknown>user.status == 'Active';
 
@@ -76,7 +109,7 @@ export class UserComponent implements OnInit {
       this.userService.updateUser(user).subscribe((response: User) => {
         this.getAllUsers();
       }, (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert('Update error' + error.message);
       })
     } else { // si subiste cosas
       if (typeof this.imgData === "string") {
@@ -107,7 +140,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-    public onOpenModalUser(user: User, mode: string) {
+  public onOpenModalUser(user: User, mode: string) {
 
       const container = document.getElementById('user-container');
 

@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   name: string;
-  email: string;
+  emails: string[];
   gender: string;
   status: boolean;
   img: string;
